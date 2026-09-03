@@ -1,8 +1,14 @@
 const btnCookie = document.getElementById("cookie");
-const counter = document.getElementById("counter");
+const counterDisplay = document.getElementById("counter");
+/* let cookieCount = 0;
+counterDisplay.innerText = cookieCount; */
 
 btnCookie.addEventListener("click", updateCounter);
-
+/* 
+function updateCounter(){
+    cookieCount += 1;
+    counterDisplay.innerText = cookieCount;
+} */
 
 // this function will enable the counter to update when the cookie is clicked.
 
@@ -76,4 +82,4 @@ function factory(){
     setInterval(function(){
         counter.innerText = parseInt(counter.innerText) + 100;
     },1000)
-}
+} 
