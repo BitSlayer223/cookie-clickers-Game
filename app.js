@@ -1,5 +1,6 @@
 const btnCookie = document.getElementById("cookie");
 const counterDisplay = document.getElementById("counter");
+let cookieCount = 0;
 /* let cookieCount = 0;
 counterDisplay.innerText = cookieCount; */
 
@@ -13,8 +14,8 @@ function updateCounter(){
 // this function will enable the counter to update when the cookie is clicked.
 
 function updateCounter() {
-    counter.innerText = parseInt(counter.innerText) + 1;
-    return counter.innerText;
+    counterDisplay.innerText = parseInt(counterDisplay.innerText) + 1;
+    saveGameData();
 }
 
 
@@ -31,8 +32,8 @@ const cps = document.getElementById("cps");
 grandmotherBtn.addEventListener("click", buyGrandmother);
 
 function buyGrandmother(){
-    if(parseInt(counter.innerText) >= 100){
-        counter.innerText = parseInt(counter.innerText) - 100;
+    if(parseInt(counterDisplay.innerText) >= 100){
+        counterDisplay.innerText = parseInt(counterDisplay.innerText) - 100;
         grandmother();
         cps.innerText = `Cookies per second: ${parseInt(cps.innerText.split(": ")[1]) + 1}`;
         grandmotherBtn.classList.add("purchased");
@@ -40,20 +41,19 @@ function buyGrandmother(){
     }else{
         alert("you can't afford this item yet, keep clicking the cookie to earn more cookies!");
     }
+    saveGameData();
 }
 
 function grandmother(){
-    setInterval(function(){
-        counter.innerText = parseInt(counter.innerText) + 1;
-    },1000)
+    // Production is handled by the single shared timer below.
 }
 
 //baker button 
 bakerBtn.addEventListener("click", buyBaker);
 
 function buyBaker(){
-    if(parseInt(counter.innerText) >= 500){
-        counter.innerText = parseInt(counter.innerText) - 500;
+    if(parseInt(counterDisplay.innerText) >= 500){
+        counterDisplay.innerText = parseInt(counterDisplay.innerText) - 500;
         baker();
         cps.innerText = `Cookies per second: ${parseInt(cps.innerText.split(": ")[1]) + 10}`;
         bakerBtn.classList.add("purchased");
@@ -61,20 +61,19 @@ function buyBaker(){
     }else{
         alert("you can't afford this item yet, keep clicking the cookie to earn more cookies!");
     }
+    saveGameData();
 }
 
 function baker(){
-    setInterval(function(){
-        counter.innerText = parseInt(counter.innerText) + 10;
-    },1000)
+    // Production is handled by the single shared timer below.
 }
 
 //Factory Button
 factoryBtn.addEventListener("click", buyFactory);
 
 function buyFactory(){
-    if(parseInt(counter.innerText) >= 5000){
-        counter.innerText = parseInt(counter.innerText) - 5000;
+    if(parseInt(counterDisplay.innerText) >= 5000){
+        counterDisplay.innerText = parseInt(counterDisplay.innerText) - 5000;
         factory();
         cps.innerText = `Cookies per second: ${parseInt(cps.innerText.split(": ")[1]) + 100}`;
         factoryBtn.classList.add("purchased");
@@ -82,10 +81,35 @@ function buyFactory(){
     }else{
         alert("you can't afford this item yet, keep clicking the cookie to earn more cookies!");
     }
+    saveGameData();
 }
 
 function factory(){
-    setInterval(function(){
-        counter.innerText = parseInt(counter.innerText) + 100;
-    },1000)
+    // Production is handled by the single shared timer below.
 } 
+
+
+
+//Save the game data even after refreshing the page, using local storage to store the cookie count and cookies per second.
+
+function saveGameData() {
+    localStorage.setItem("cookieCount", counterDisplay.innerText);
+    localStorage.setItem("cookiesPerSecond", cps.innerText.split(": ")[1]);
+}
+
+function loadGameData() {
+    counterDisplay.innerText = localStorage.getItem("cookieCount") || "0";
+    cps.innerText = `Cookies per second: ${localStorage.getItem("cookiesPerSecond") || "0"}`;
+}
+
+loadGameData();
+
+// Keep one timer for all purchased items to prevent production from stacking
+// unexpectedly when shop buttons are clicked repeatedly.
+setInterval(function(){
+    const cookiesPerSecond = parseInt(cps.innerText.split(": ")[1]) || 0;
+    if (cookiesPerSecond > 0) {
+        counterDisplay.innerText = parseInt(counterDisplay.innerText) + cookiesPerSecond;
+        saveGameData();
+    }
+}, 1000);
