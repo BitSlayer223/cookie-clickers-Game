@@ -37,6 +37,8 @@ function buyGrandmother(){
         cps.innerText = `Cookies per second: ${parseInt(cps.innerText.split(": ")[1]) + 1}`;
         grandmotherBtn.classList.add("purchased");
         setTimeout(() => grandmotherBtn.classList.remove("purchased"), 200);
+    }else{
+        alert("you can't afford this item yet, keep clicking the cookie to earn more cookies!");
     }
 }
 
@@ -56,6 +58,8 @@ function buyBaker(){
         cps.innerText = `Cookies per second: ${parseInt(cps.innerText.split(": ")[1]) + 10}`;
         bakerBtn.classList.add("purchased");
         setTimeout(() => bakerBtn.classList.remove("purchased"), 200);
+    }else{
+        alert("you can't afford this item yet, keep clicking the cookie to earn more cookies!");
     }
 }
 
@@ -75,6 +79,8 @@ function buyFactory(){
         cps.innerText = `Cookies per second: ${parseInt(cps.innerText.split(": ")[1]) + 100}`;
         factoryBtn.classList.add("purchased");
         setTimeout(() => factoryBtn.classList.remove("purchased"), 200);
+    }else{
+        alert("you can't afford this item yet, keep clicking the cookie to earn more cookies!");
     }
 }
 
